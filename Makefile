@@ -14,8 +14,10 @@ test:
 	go test -v -cover ./...
 server:
 	go run main.go
+mock:
+	mockgen -package=mockdb github.com/huyhoangvp002/simplebank/db/sqlc  Store  > db/mock/store.go
 
-.PHONY: postgres createdb dropdb migrateup migratedown sqlc test server
+.PHONY: postgres createdb dropdb migrateup migratedown sqlc test server mock
 # .PHONY is used to indicate that these targets do not represent files, but rather commands
 # This prevents make from looking for files with the same names as the targets
 # and ensures that the commands are always executed when invoked.				

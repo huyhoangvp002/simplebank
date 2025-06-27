@@ -9,13 +9,13 @@ import (
 	db "github.com/huyhoangvp002/simplebank/db/sqlc"
 )
 
-type accountRequest struct {
+type createAccountRequest struct {
 	Owner    string `json:"owner" binding:"required"`
 	Currency string `json:"currency" binding:"required,oneof=USD EUR"`
 }
 
 func (server *Server) createAccount(ctx *gin.Context) {
-	var req accountRequest
+	var req createAccountRequest
 	if err := ctx.ShouldBindJSON(&req); err != nil {
 		log.Println("JSON bind error:", err)
 
