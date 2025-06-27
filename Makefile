@@ -12,8 +12,10 @@ sqlc:
 	sqlc generate
 test:
 	go test -v -cover ./...
+server:
+	go run main.go
 
-.PHONY: postgres createdb dropdb migrateup migratedown sqlc test
+.PHONY: postgres createdb dropdb migrateup migratedown sqlc test server
 # .PHONY is used to indicate that these targets do not represent files, but rather commands
 # This prevents make from looking for files with the same names as the targets
 # and ensures that the commands are always executed when invoked.				

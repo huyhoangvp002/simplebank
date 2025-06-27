@@ -7,5 +7,6 @@ packages:
     engine: "postgresql"               # CSDL đang dùng
     emit_json_tags: true               # Thêm json tags trong struct (rất hữu ích khi dùng API)
     emit_prepared_queries: false       # Tạo prepared statement để tăng hiệu năng
-    emit_interface: false              # Không tạo interface (bạn có thể bật lên nếu cần mocking)
+    emit_interface: true           # Không tạo interface (bạn có thể bật lên nếu cần mocking)
     emit_exact_table_names: false      # Tự động đổi table name về PascalCase trong Go struct
+    emit_empty_slices: true            # Trả về slice rỗng thay vì nil khi không có kết quả
