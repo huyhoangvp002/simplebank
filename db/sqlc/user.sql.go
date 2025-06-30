@@ -11,30 +11,30 @@ import (
 
 const createUser = `-- name: CreateUser :one
 INSERT INTO users (
-    username, hash_password, fullname, email
+    username, hashed_password, fullname, email
 ) VALUES (
   $1, $2 , $3 , $4
-) RETURNING username, hash_password, fullname, email, password_change_at, created_at
+) RETURNING username, hashed_password, fullname, email, password_change_at, created_at
 `
 
 type CreateUserParams struct {
-	Username     string `json:"username"`
-	HashPassword string `json:"hash_password"`
-	Fullname     string `json:"fullname"`
-	Email        string `json:"email"`
+	Username       string `json:"username"`
+	HashedPassword string `json:"hashed_password"`
+	Fullname       string `json:"fullname"`
+	Email          string `json:"email"`
 }
 
 func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (User, error) {
 	row := q.db.QueryRowContext(ctx, createUser,
 		arg.Username,
-		arg.HashPassword,
+		arg.HashedPassword,
 		arg.Fullname,
 		arg.Email,
 	)
 	var i User
 	err := row.Scan(
 		&i.Username,
-		&i.HashPassword,
+		&i.HashedPassword,
 		&i.Fullname,
 		&i.Email,
 		&i.PasswordChangeAt,
@@ -44,7 +44,7 @@ func (q *Queries) CreateUser(ctx context.Context, arg CreateUserParams) (User, e
 }
 
 const getUser = `-- name: GetUser :one
-SELECT username, hash_password, fullname, email, password_change_at, created_at FROM users 
+SELECT username, hashed_password, fullname, email, password_change_at, created_at FROM users 
 WHERE username = $1 LIMIT 1
 `
 
@@ -53,7 +53,7 @@ func (q *Queries) GetUser(ctx context.Context, username string) (User, error) {
 	var i User
 	err := row.Scan(
 		&i.Username,
-		&i.HashPassword,
+		&i.HashedPassword,
 		&i.Fullname,
 		&i.Email,
 		&i.PasswordChangeAt,
