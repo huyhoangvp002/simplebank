@@ -6,8 +6,14 @@ dropdb:
 	sudo docker exec -it postgres12 dropdb  simple_bank
 migrateup:
 	migrate -path db/migration -database "postgresql://root:secret@localhost:5432/simple_bank?sslmode=disable" -verbose up
+migrateup1:
+	migrate -path db/migration -database "postgresql://root:secret@localhost:5432/simple_bank?sslmode=disable" -verbose up 1
+
 migratedown:
 	migrate -path db/migration -database "postgresql://root:secret@localhost:5432/simple_bank?sslmode=disable" -verbose down
+migratedown1:
+	migrate -path db/migration -database "postgresql://root:secret@localhost:5432/simple_bank?sslmode=disable" -verbose down 1
+
 sqlc:
 	sqlc generate
 test:
@@ -17,7 +23,7 @@ server:
 mock:
 	mockgen -package=mockdb github.com/huyhoangvp002/simplebank/db/sqlc  Store  > db/mock/store.go
 
-.PHONY: postgres createdb dropdb migrateup migratedown sqlc test server mock
+.PHONY: postgres createdb dropdb migrateup migratedown sqlc test server mock migratedown1 migrateup1
 # .PHONY is used to indicate that these targets do not represent files, but rather commands
 # This prevents make from looking for files with the same names as the targets
 # and ensures that the commands are always executed when invoked.				
