@@ -1,9 +1,16 @@
 package token
 
 import (
+	"errors"
 	"time"
 
 	"github.com/google/uuid"
+)
+
+// Payload contains the payload data for the JWT token.
+var (
+	ErrExpiredToken = errors.New("token has expired")
+	ErrInvalidToken = errors.New("invalid token")
 )
 
 type Payload struct {
@@ -16,17 +23,24 @@ type Payload struct {
 }
 
 func NewPayload(username string, duration time.Duration) (*Payload, error) {
-	id, err := uuid.NewRandom()
+	tokenID, err := uuid.NewRandom()
 	if err != nil {
 		return nil, err
 	}
 
 	payload := &Payload{
-		ID:        id,
+		ID:        tokenID,
 		Username:  username,
 		IssuedAt:  time.Now(),
 		ExpiredAt: time.Now().Add(duration),
 	}
 
 	return payload, nil
+}
+
+func (payload *Payload) Valid() error {
+	if time.Now().After(payload.ExpiredAt) {
+		return ErrExpiredToken
+	}
+	return nil
 }
